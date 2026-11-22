@@ -59,7 +59,7 @@ function BrandMark({ compact = false }) {
   return (
     <a className={`brand ${compact ? "brand--compact" : ""}`} href="#top" aria-label="Titan Arms — главная">
       <span className="brand__mark" aria-hidden="true">
-        <img src="./assets/profile-reference.jpg" alt="" />
+        <img src="./assets/titan-arms-logo.jpg" alt="" />
       </span>
       <span className="brand__word">
         <strong>TITAN</strong>
