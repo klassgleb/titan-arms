@@ -69,8 +69,52 @@ function BrandMark({ compact = false }) {
   );
 }
 
-function ArrowIcon({ diagonal = false }) {
-  return <span aria-hidden="true">{diagonal ? "↗" : "→"}</span>;
+function ArrowIcon({ diagonal = false, direction = "right" }) {
+  const iconDirection = diagonal ? "diagonal" : direction;
+  const paths = {
+    right: "M4 12h15m-6-6 6 6-6 6",
+    left: "M20 12H5m6 6-6-6 6-6",
+    up: "M12 20V5m-6 6 6-6 6 6",
+    diagonal: "M7 17 17 7M7 7h10v10",
+  };
+  return (
+    <svg className={`icon-arrow icon-arrow--${iconDirection}`} viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+      <path d={paths[iconDirection]} />
+    </svg>
+  );
+}
+
+function SparkIcon() {
+  return (
+    <svg className="icon-spark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 1.5 15 9l7.5 3-7.5 3-3 7.5L9 15l-7.5-3L9 9l3-7.5Z" />
+    </svg>
+  );
+}
+
+function LocationIcon() {
+  return (
+    <svg className="location-pin" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+      <path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" />
+      <circle cx="12" cy="10" r="2.25" />
+    </svg>
+  );
+}
+
+function PlayIcon() {
+  return (
+    <svg className="play-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="M4 2.5 13 8l-9 5.5v-11Z" />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg className="check-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+      <path d="m5 12 4.5 4.5L19 7" />
+    </svg>
+  );
 }
 
 function Reveal({ children, className = "", delay = 0 }) {
@@ -120,8 +164,8 @@ function Header({ onBuy }) {
       <div className="header__inner">
         <BrandMark />
         <a className="header__location" href={contacts.mapUrl} target="_blank" rel="noreferrer">
-          <span className="location-pin">⌖</span>
-          <span>ЖК ALMA CITY<small>{contacts.venue.replace("ЖК Alma City, ", "")} · 2GIS ↗</small></span>
+          <LocationIcon />
+          <span>ЖК ALMA CITY<small>{contacts.venue.replace("ЖК Alma City, ", "")} · 2GIS <ArrowIcon diagonal /></small></span>
         </a>
         <nav className={`header__nav ${menuOpen ? "header__nav--open" : ""}`} aria-label="Основная навигация">
           <a href="#about" onClick={closeMenu}>О зале</a>
@@ -174,7 +218,7 @@ function Hero() {
           </p>
           <div className="hero__buttons">
             <a className="button button--orange" href="#plans">ВЫБРАТЬ АБОНЕМЕНТ <ArrowIcon /></a>
-            <a className="button button--ghost" href="#about"><span className="play-icon">▶</span> ПОЧУВСТВОВАТЬ АТМОСФЕРУ</a>
+            <a className="button button--ghost" href="#about"><PlayIcon /> ПОЧУВСТВОВАТЬ АТМОСФЕРУ</a>
           </div>
         </div>
         <div className="hero__side-note"><span>01 / 04</span><i /> МЕСТО, ГДЕ КОВАЮТ СИЛУ</div>
@@ -196,7 +240,7 @@ function Marquee() {
       <div className="marquee__track">
         {[0, 1].map((item) => (
           <span key={item} aria-hidden={item === 1}>
-            СИЛА <b>✳</b> ДИСЦИПЛИНА <b>✳</b> РЕЗУЛЬТАТ <b>✳</b> БЕЗ ОТГОВОРОК <b>✳</b>
+            СИЛА <b><SparkIcon /></b> ДИСЦИПЛИНА <b><SparkIcon /></b> РЕЗУЛЬТАТ <b><SparkIcon /></b> БЕЗ ОТГОВОРОК <b><SparkIcon /></b>
           </span>
         ))}
       </div>
@@ -217,9 +261,9 @@ function About() {
         <div className="about__tiles">
           <Reveal className="about-card about-card--large">
             <span className="about-card__number">01</span>
-            <div className="about-card__symbol">✳</div>
+            <span className="about-card__symbol"><SparkIcon /></span>
             <div><h3>ТВОЙ РИТМ.<br />ТВОИ ПРАВИЛА.</h3><p>Абонементы на 12 посещений и безлимит — выбери свой режим.</p></div>
-            <span className="corner-mark">↗</span>
+            <span className="corner-mark"><ArrowIcon diagonal /></span>
           </Reveal>
           <Reveal className="about-card about-card--image" delay={0.1}>
             <span className="about-card__number">02 / ALMA CITY</span>
@@ -227,7 +271,7 @@ function About() {
           </Reveal>
           <Reveal className="about-card about-card--blue" delay={0.18}>
             <span className="about-card__number">03</span>
-            <div className="about-card__symbol">↗</div>
+            <div className="about-card__symbol"><ArrowIcon diagonal /></div>
             <div><h3>ВЫЖИМАЙ<br />МАКСИМУМ.</h3><p>Каждый подход — шаг к версии себя сильнее.</p></div>
           </Reveal>
         </div>
@@ -271,7 +315,7 @@ function MembershipCard({ plan, selected, onSelect, onBuy }) {
       >
         ЗАБРАТЬ АБОНЕМЕНТ <ArrowIcon />
       </button>
-      <span className="plan-card__corner" aria-hidden="true">✳</span>
+      <span className="plan-card__corner" aria-hidden="true"><SparkIcon /></span>
     </motion.article>
   );
 }
@@ -357,7 +401,7 @@ function Pricing({ onBuy }) {
           )}
         </AnimatePresence>
         <div className="pricing__fineprint">
-          <span>✳ УТОЧНИТЬ УСЛОВИЯ ПО АБОНЕМЕНТУ</span>
+          <span><SparkIcon /> УТОЧНИТЬ УСЛОВИЯ ПО АБОНЕМЕНТУ</span>
           <a href={contactWaLink("Здравствуйте! Пишу с сайта Titan Arms. Подскажите, пожалуйста, условия абонементов.")} target="_blank" rel="noreferrer">НАПИСАТЬ В WHATSAPP <ArrowIcon diagonal /></a>
         </div>
       </div>
@@ -400,7 +444,7 @@ function Team({ onCoach }) {
             ))}
         </div>
         <Reveal className="team-callout">
-            <span className="team-callout__cross">✳</span>
+            <span className="team-callout__cross"><SparkIcon /></span>
             <div>
               <span>ТВОЙ СЛЕДУЮЩИЙ УРОВЕНЬ</span>
               <h3>НЕ ОДИН. <i>С КОМАНДОЙ.</i></h3>
@@ -430,8 +474,8 @@ function Gallery() {
           </Reveal>
           <div className="gallery__controls">
             <a className="text-link" href={contacts.instagramUrl} target="_blank" rel="noreferrer">БОЛЬШЕ В INSTAGRAM <ArrowIcon diagonal /></a>
-            <button onClick={() => moveRail(-1)} aria-label="Предыдущие фотографии">←</button>
-            <button onClick={() => moveRail(1)} aria-label="Следующие фотографии">→</button>
+            <button onClick={() => moveRail(-1)} aria-label="Предыдущие фотографии"><ArrowIcon direction="left" /></button>
+            <button onClick={() => moveRail(1)} aria-label="Следующие фотографии"><ArrowIcon /></button>
           </div>
         </div>
       </div>
@@ -452,7 +496,7 @@ function Gallery() {
           <span>ОТКРОЙ БОЛЬШЕ</span><strong>СМОТРИ<br /><i>INSTAGRAM.</i></strong><ArrowIcon diagonal />
         </a>
       </div>
-      <div className="page-wrap gallery__mobile-hint">СВАЙПНИ, ЧТОБЫ УВИДЕТЬ БОЛЬШЕ <span>→</span></div>
+      <div className="page-wrap gallery__mobile-hint">СВАЙПНИ, ЧТОБЫ УВИДЕТЬ БОЛЬШЕ <ArrowIcon /></div>
     </section>
   );
 }
@@ -484,7 +528,7 @@ function Instagram() {
             </a>
           ))}
           <a className="instagram-follow" href={contacts.instagramUrl} target="_blank" rel="noreferrer">
-            <span>✳</span><strong>ПОДПИШИСЬ<br />НА НАС</strong><small>ПЕРЕЙТИ В INSTAGRAM ↗</small>
+            <SparkIcon /><strong>ПОДПИШИСЬ<br />НА НАС</strong><small>ПЕРЕЙТИ В INSTAGRAM <ArrowIcon diagonal /></small>
           </a>
         </div>
       </div>
@@ -504,15 +548,15 @@ function Contact({ onBuy }) {
         <Reveal className="contact__details" delay={0.1}>
           <a className="contact-row" href={contacts.mapUrl} target="_blank" rel="noreferrer">
             <span className="contact-row__index">01</span><span className="contact-row__label">АДРЕС</span>
-            <strong>{contacts.address}<small>Цокольный этаж · Открыть в 2GIS ↗</small></strong>
+            <strong>{contacts.address}<small>Цокольный этаж · Открыть в 2GIS <ArrowIcon diagonal /></small></strong>
           </a>
           <a className="contact-row" href={`tel:${contacts.phone}`}>
             <span className="contact-row__index">02</span><span className="contact-row__label">ТЕЛЕФОН</span>
-            <strong>{contacts.phoneLabel}<small>Звонок в Titan Arms ↗</small></strong>
+            <strong>{contacts.phoneLabel}<small>Звонок в Titan Arms <ArrowIcon diagonal /></small></strong>
           </a>
           <a className="contact-row" href={contactWaLink()} target="_blank" rel="noreferrer">
             <span className="contact-row__index">03</span><span className="contact-row__label">WHATSAPP</span>
-            <strong>Напиши нам<small>Ответим по абонементам и тренировкам ↗</small></strong>
+            <strong>Напиши нам<small>Ответим по абонементам и тренировкам <ArrowIcon diagonal /></small></strong>
           </a>
           <div className="contact-row contact-row--hours">
             <span className="contact-row__index">04</span><span className="contact-row__label">ГРАФИК</span>
@@ -531,12 +575,12 @@ function Footer() {
         <div className="footer__top">
           <BrandMark />
           <strong className="footer__slogan">ВЫЖИМАЙ<br /><i>МАКСИМУМ.</i></strong>
-          <a className="footer__up" href="#top">ВВЕРХ ↑</a>
+          <a className="footer__up" href="#top">ВВЕРХ <ArrowIcon direction="up" /></a>
         </div>
         <div className="footer__bottom">
           <span>© TITAN ARMS · ALMATY</span>
           <span>{contacts.venue.toUpperCase()}</span>
-          <div><a href={contacts.instagramUrl} target="_blank" rel="noreferrer">INSTAGRAM ↗</a><a href={contactWaLink()} target="_blank" rel="noreferrer">WHATSAPP ↗</a></div>
+          <div><a href={contacts.instagramUrl} target="_blank" rel="noreferrer">INSTAGRAM <ArrowIcon diagonal /></a><a href={contactWaLink()} target="_blank" rel="noreferrer">WHATSAPP <ArrowIcon diagonal /></a></div>
           <span>СИЛА — ЭТО ВЫБОР.</span>
         </div>
       </div>
@@ -707,7 +751,7 @@ function CheckoutDrawer({ offer, onClose }) {
               )}
               {step === "payment" && (
                 <motion.div key="payment" className="checkout-step" initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }} transition={{ duration: 0.18 }}>
-                  <button className="checkout-back" onClick={() => { setError(""); setStep("details"); }}>← НАЗАД К ДАННЫМ</button>
+                  <button className="checkout-back" onClick={() => { setError(""); setStep("details"); }}><ArrowIcon direction="left" /> НАЗАД К ДАННЫМ</button>
                   <h2 id="checkout-title">ВЫБЕРИ<br /><i>БАНК.</i></h2>
                   <div className="checkout-offer checkout-offer--compact">
                     <span>{offer.terms}</span><strong>{offer.title}</strong><b>{formatPrice(offer.amount)} ₸</b>
@@ -737,7 +781,7 @@ function CheckoutDrawer({ offer, onClose }) {
               )}
               {step === "confirmation" && order && (
                 <motion.div key="confirmation" className="checkout-confirmation" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.28 }}>
-                  <div className="confirmation-icon">✓</div>
+                  <div className="confirmation-icon"><CheckIcon /></div>
                   <span className="eyebrow">ДЕМО-ЗАКАЗ ПОДТВЕРЖДЁН</span>
                   <h2 id="checkout-title">ДО ВСТРЕЧИ<br /><i>В ЗАЛЕ.</i></h2>
                   <div className="confirmation-order">
